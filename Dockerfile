@@ -18,10 +18,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     python3-pip \
     git \
     systemd \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install --no-cache-dir setuptools && pip3 install --no-cache-dir ansible && ansible --version
+      && apt-get clean \
+      && rm -rf /var/lib/apt/lists/* \
+      && pip3 install --no-cache-dir setuptools \
+      && pip3 install --no-cache-dir ansible \
+      && ansible --version
 
 COPY ansible-docker.sh /ansible-docker.sh
 ENTRYPOINT ["/ansible-docker.sh"]
