@@ -12,7 +12,7 @@ set -x
 ansible::prepare() {
   : "${TARGETS?No targets to check. Nothing to do.}"
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
-  pushd ${GITHUB_WORKSPACE}
+  pushd "${GITHUB_WORKSPACE}"
 
   # generate ansible.cfg
   echo -e """
@@ -35,16 +35,17 @@ ansible_connection=local
 ansible::test::role() {
   : "${TARGETS?No targets to check. Nothing to do.}"
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
-  pushd ${GITHUB_WORKSPACE}
+  pushd "${GITHUB_WORKSPACE}"
 
   # generate playbook to be executed
-  echo -e """---
-  - name: test a ansible role
-    hosts: localhost
-    tags: default
-    roles:
-      - \""${TARGETS}"\"
-    """ | tee -a deploy.yml
+  cat <<EOF | tee -a deploy.yml
+---
+- name: test a ansible role
+  hosts: localhost
+  tags: default
+  roles:
+    - "${TARGETS}"
+EOF
 
   # execute playbook
   ansible-playbook  --connection=local --limit localhost deploy.yml
@@ -54,24 +55,24 @@ ansible::test::playbook() {
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
   : "${HOSTS?at least one valid host is required to check your playbook!}"
   : "${GROUP?Please define the group your playbook is written for!}"
-  pushd ${GITHUB_WORKSPACE}
+  pushd "${GITHUB_WORKSPACE}"
 
   echo -e "[${GROUP}]\n${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1" | tee host.ini
 
   # execute playbook
-  ansible-playbook --connection=local --inventory host.ini ${TARGETS} 
+  ansible-playbook --connection=local --inventory host.ini "${TARGETS}"
 }
 
 # make sure git is up to date
 git submodule update --init --recursive
 if [[ "${REQUIREMENTS}" == *.yml ]]
 then
-  ansible-galaxy install -r ${REQUIREMENTS}
+  ansible-galaxy install -r "${REQUIREMENTS}"
 else
-  [ ! -z "${REQUIREMENTS}" ] && ansible-galaxy install ${REQUIREMENTS}
+  [ -n "${REQUIREMENTS}" ] && ansible-galaxy install "${REQUIREMENTS}"
 fi
-if [ "$0" = "$BASH_SOURCE" ] ; then
-  >&2 echo -E "\nRunning Ansible debian check...\n"
+if [ "$0" = "${BASH_SOURCE[*]}" ] ; then
+  >&2 printf "Running Ansible debian check...\n"
   ansible::prepare
   if [[ "${TARGETS}" == *.yml ]]
   then

@@ -9,7 +9,7 @@ LABEL "com.github.actions.description"="Check ansible role or playbook with Debi
 LABEL "com.github.actions.icon"="aperture"
 LABEL "com.github.actions.color"="green"
 
-RUN apt-get update -y && apt-get install -y \
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
     software-properties-common \
     build-essential \
     libffi-dev \
@@ -17,11 +17,12 @@ RUN apt-get update -y && apt-get install -y \
     python3-dev \
     python3-pip \
     git \
-    systemd
+    systemd \
+      && apt-get clean \
+      && rm -rf /var/lib/apt/lists/* \
+      && pip3 install --no-cache-dir setuptools \
+      && pip3 install --no-cache-dir ansible \
+      && ansible --version
 
-RUN pip3 install setuptools && pip3 install ansible
-
-RUN ansible --version
-
-ADD ansible-docker.sh /ansible-docker.sh
+COPY ansible-docker.sh /ansible-docker.sh
 ENTRYPOINT ["/ansible-docker.sh"]
