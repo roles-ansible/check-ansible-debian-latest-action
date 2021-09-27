@@ -19,9 +19,9 @@ RUN apt-get update -y && apt-get install -y \
     git \
     systemd
 
-RUN pip3 install setuptools && pip3 install ansible
+RUN pip3 install --no-cache-dir setuptools && pip3 install --no-cache-dir ansible
 
 RUN ansible --version
 
-ADD ansible-docker.sh /ansible-docker.sh
+COPY ansible-docker.sh /ansible-docker.sh
 ENTRYPOINT ["/ansible-docker.sh"]

@@ -11,8 +11,10 @@ To use the action simply create an ``ansible-debian-latest.yml`` *(or choose cus
 For example:
 
 ```yaml
+---
 name: Ansible check debian:latest  # feel free to pick your own name
 
+# yamllint disable-line rule:truthy
 on: [push, pull_request]
 
 jobs:
@@ -22,10 +24,11 @@ jobs:
 
     steps:
     # Important: This sets up your GITHUB_WORKSPACE environment variable
-    - uses: actions/checkout@v2
+    - name: checkout git repo
+      uses: actions/checkout@v2
 
     - name: ansible check with debian:latest
-      # replace "master" with any valid ref
+      # optionally replace "master" with any valid git ref
       uses: roles-ansible/check-ansible-debian-latest-action@master
       with:
         targets: "./"
