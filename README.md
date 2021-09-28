@@ -63,11 +63,13 @@ jobs:
           #   requirements: 'do1jlr.ansible_version'
           #   or your requiements.yml file.
           #   requirements: 'requirements.yml'
+          #
           # tags: ""
           #  [optional]
           #   If you want to limit the test to some tags, you can use this
           #   tags or the skiptags option. It will trigger the --tags $tags
           #   option to ansible.
+          #
           # skiptags: ""
           # [optional]
           #  See tags. This will trigger the --skip-tags $skiptags option
