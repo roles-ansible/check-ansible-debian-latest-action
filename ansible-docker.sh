@@ -8,18 +8,17 @@ set -x
 #   [required] TARGETS : Path to your ansible role or to a playbook .yml file you want to be tested.
 #                       (e.g, './' or 'roles/my_role/' for roles or 'site.yml' for playbooks)
 
-
 ansible::prepare() {
   : "${TARGETS?No targets to check. Nothing to do.}"
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
   pushd "${GITHUB_WORKSPACE}"
 
   # generate ansible.cfg
-  echo -e """
+  cat <<EOF | tee ansible.cfg
 [defaults]
-inventory = host.ini
-nocows = True
-host_key_checking = False
+inventory = hosts.ini
+nocows = true
+host_key_checking = false
 forks = 20
 fact_caching = jsonfile
 fact_caching_connection = $HOME/facts
@@ -27,11 +26,15 @@ fact_caching_timeout = 7200
 stdout_callback = yaml
 ansible_python_interpreter=/usr/bin/python3
 ansible_connection=local
-""" | tee ansible.cfg
+EOF
 
   # create host list
-  echo -e "[local]\nlocalhost ansible_python_interpreter=/usr/bin/python3 ansible_connection=local" | tee host.ini
+  cat <<EOF | tee hosts.ini
+[local]
+localhost ansible_python_interpreter=/usr/bin/python3 ansible_connection=local
+EOF
 }
+
 ansible::test::role() {
   : "${TARGETS?No targets to check. Nothing to do.}"
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
@@ -48,7 +51,7 @@ ansible::test::role() {
 EOF
 
   # execute playbook
-  ansible-playbook  --connection=local --limit localhost deploy.yml
+  ansible-playbook  --connection=local --limit localhost deploy.yml --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
 }
 ansible::test::playbook() {
   : "${TARGETS?No targets to check. Nothing to do.}"
@@ -57,10 +60,13 @@ ansible::test::playbook() {
   : "${GROUP?Please define the group your playbook is written for!}"
   pushd "${GITHUB_WORKSPACE}"
 
-  echo -e "[${GROUP}]\n${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1" | tee host.ini
+  cat <<EOF | hosts.ini
+[${GROUP}]
+${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1"
+EOF
 
   # execute playbook
-  ansible-playbook --connection=local --inventory host.ini "${TARGETS}"
+  ansible-playbook --connection=local --inventory host.ini "${TARGETS}" --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
 }
 
 # make sure git is up to date
