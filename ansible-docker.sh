@@ -15,11 +15,11 @@ ansible::prepare() {
   pushd "${GITHUB_WORKSPACE}"
 
   # generate ansible.cfg
-  echo -e """
+  cat <<EOF | tee ansible.cfg
 [defaults]
-inventory = host.ini
-nocows = True
-host_key_checking = False
+inventory = hosts.ini
+nocows = true
+host_key_checking = false
 forks = 20
 fact_caching = jsonfile
 fact_caching_connection = $HOME/facts
@@ -27,10 +27,14 @@ fact_caching_timeout = 7200
 stdout_callback = yaml
 ansible_python_interpreter=/usr/bin/python3
 ansible_connection=local
-""" | tee ansible.cfg
+EOF
 
   # create host list
-  echo -e "[local]\nlocalhost ansible_python_interpreter=/usr/bin/python3 ansible_connection=local" | tee host.ini
+  cat <<EOF | tee hosts.ini
+[local]
+localhost ansible_python_interpreter=/usr/bin/python3 ansible_connection=local
+EOF
+
 }
 ansible::test::role() {
   : "${TARGETS?No targets to check. Nothing to do.}"
@@ -57,7 +61,10 @@ ansible::test::playbook() {
   : "${GROUP?Please define the group your playbook is written for!}"
   pushd "${GITHUB_WORKSPACE}"
 
-  echo -e "[${GROUP}]\n${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1" | tee host.ini
+  cat <<EOF | hosts.ini
+[${GROUP}]
+${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1"
+EOF
 
   # execute playbook
   ansible-playbook --connection=local --inventory host.ini "${TARGETS}"
