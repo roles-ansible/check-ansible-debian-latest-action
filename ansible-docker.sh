@@ -8,7 +8,6 @@ set -x
 #   [required] TARGETS : Path to your ansible role or to a playbook .yml file you want to be tested.
 #                       (e.g, './' or 'roles/my_role/' for roles or 'site.yml' for playbooks)
 
-
 ansible::prepare() {
   : "${TARGETS?No targets to check. Nothing to do.}"
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
@@ -34,8 +33,8 @@ EOF
 [local]
 localhost ansible_python_interpreter=/usr/bin/python3 ansible_connection=local
 EOF
-
 }
+
 ansible::test::role() {
   : "${TARGETS?No targets to check. Nothing to do.}"
   : "${GITHUB_WORKSPACE?GITHUB_WORKSPACE has to be set. Did you use the actions/checkout action?}"
@@ -52,7 +51,7 @@ ansible::test::role() {
 EOF
 
   # execute playbook
-  ansible-playbook  --connection=local --limit localhost deploy.yml
+  ansible-playbook  --connection=local --limit localhost deploy.yml --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
 }
 ansible::test::playbook() {
   : "${TARGETS?No targets to check. Nothing to do.}"
@@ -67,7 +66,7 @@ ${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local an
 EOF
 
   # execute playbook
-  ansible-playbook --connection=local --inventory host.ini "${TARGETS}"
+  ansible-playbook --connection=local --inventory host.ini "${TARGETS}" --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
 }
 
 # make sure git is up to date

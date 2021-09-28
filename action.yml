@@ -53,7 +53,7 @@ runs:
     GROUP: ${{ inputs.group }}
     REQUIREMENTS: ${{ inputs.requirements }}
     TAGS: ${{ inputs.tags }}
-    SKIP-TAGS: $(( input.skip-tags }}
+    SKIPTAGS: $(( input.skip-tags }}
 branding:
   icon: 'check-circle'
   color: 'green'
