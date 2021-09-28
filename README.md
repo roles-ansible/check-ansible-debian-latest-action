@@ -63,6 +63,15 @@ jobs:
           #   requirements: 'do1jlr.ansible_version'
           #   or your requiements.yml file.
           #   requirements: 'requirements.yml'
+          # tags: ""
+          #  [optional]
+          #   If you want to limit the test to some tags, you can use this
+          #   tags or the skiptags option. It will trigger the --tags $tags
+          #   option to ansible.
+          # skiptags: ""
+          # [optional]
+          #  See tags. This will trigger the --skip-tags $skiptags option
+          #  to ansible.
 ```
 
 Alternatively, you can run the ansible check only on certain branches:
@@ -90,7 +99,7 @@ The Dockerfile and associated scripts and documentation in this project are rele
 
  Credits
 --------------
-The initial GitHub action has been created by [Stefan Stölzle](/stoe) at
-[stoe/actions](https://github.com/stoe/actions).<br/>
-It was used by ansible for lint checks at [ansible/ansible-lint-action](https://github.com/ansible/ansible-lint-action.git)<br/>
-It was modified from [L3D](github.com/do1jlr) to check ansible roles.
++ The initial GitHub action has been created by [Stefan Stölzle](https://github.com/stoe) at
+[stoe/actions](https://github.com/stoe/actions).
++ It was used by ansible for lint checks at [ansible/ansible-lint-action](https://github.com/ansible/ansible-lint-action.git)
++ It was modified from [L3D](github.com/do1jlr) to check ansible roles.

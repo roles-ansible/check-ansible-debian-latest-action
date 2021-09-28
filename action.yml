@@ -39,7 +39,7 @@ inputs:
       If you are using tags and you want to pick which tags
       you are going to check you can optionally define them here.
     required: false
-  skip-tags:
+  skiptags:
     desctiption:
       If you are using tags and you want explicit skip some of them,
       you can define them here.
@@ -53,7 +53,7 @@ runs:
     GROUP: ${{ inputs.group }}
     REQUIREMENTS: ${{ inputs.requirements }}
     TAGS: ${{ inputs.tags }}
-    SKIPTAGS: $(( input.skip-tags }}
+    SKIPTAGS: $(( input.skiptags }}
 branding:
   icon: 'check-circle'
   color: 'green'
