@@ -60,7 +60,7 @@ ansible::test::playbook() {
   : "${GROUP?Please define the group your playbook is written for!}"
   pushd "${GITHUB_WORKSPACE}"
 
-  cat <<EOF | hosts.ini
+  cat <<EOF | tee hosts.ini
 [${GROUP}]
 ${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1"
 EOF
