@@ -66,6 +66,7 @@ ${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local an
 EOF
 
   # execute playbook
+  # shellcheck disable=SC2086
   ansible-playbook --connection=local --inventory host.ini ${TARGETS} --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
 }
 
