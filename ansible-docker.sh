@@ -66,7 +66,7 @@ ${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local an
 EOF
 
   # execute playbook
-  ansible-playbook --connection=local --inventory host.ini "${TARGETS}" --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
+  ansible-playbook --connection=local --inventory host.ini ${TARGETS} --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
 }
 
 # make sure git is up to date
