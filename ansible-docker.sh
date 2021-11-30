@@ -62,7 +62,7 @@ ansible::test::playbook() {
 
   cat <<EOF | tee hosts.ini
 [${GROUP}]
-${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1"
+${HOSTS} ansible_python_interpreter=/usr/bin/python3 ansible_connection=local ansible_host=127.0.0.1
 EOF
 
   # execute playbook
