@@ -24,7 +24,7 @@ jobs:
     steps:
       # Important: This sets up your GITHUB_WORKSPACE environment variable
       - name: checkout git repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: ansible check with debian:latest
         # optionally replace "master" with any valid git ref

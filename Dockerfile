@@ -1,3 +1,4 @@
+# hadolint ignore=DL3007
 FROM debian:latest
 
 LABEL "maintainer"="L3D <l3d@c3woc.de>"
@@ -9,6 +10,7 @@ LABEL "com.github.actions.description"="Check ansible role or playbook with Debi
 LABEL "com.github.actions.icon"="aperture"
 LABEL "com.github.actions.color"="green"
 
+# hadolint ignore=DL3008,DL3013
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     software-properties-common \
     build-essential \
