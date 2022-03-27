@@ -23,7 +23,6 @@ forks = 20
 fact_caching = jsonfile
 fact_caching_connection = $HOME/facts
 fact_caching_timeout = 7200
-stdout_callback = yaml
 ansible_python_interpreter=/usr/bin/python3
 ansible_connection=local
 EOF
@@ -67,7 +66,7 @@ EOF
 
   # execute playbook
   # shellcheck disable=SC2086
-  ansible-playbook --connection=local --inventory host.ini ${TARGETS} --tags "${TAGS}" --skip-tags "${SKIPTAGS}"
+  ansible-playbook --connection=local --inventory host.ini ${TARGETS}
 }
 
 # make sure git is up to date
