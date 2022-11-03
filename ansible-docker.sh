@@ -44,9 +44,8 @@ ansible::test::role() {
 ---
 - name: test a ansible role
   hosts: localhost
-  tags: default
   roles:
-    - "${TARGETS}"
+    - {role: ${TARGETS}, tags: always}
 EOF
 
   # execute playbook
