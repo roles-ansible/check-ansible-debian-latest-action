@@ -28,9 +28,9 @@ jobs:
 
       - name: ansible check with debian:latest
         # optionally replace "master" with any valid git ref
-        uses: roles-ansible/check-ansible-debian-latest-action@master
+        uses: roles-ansible/check-ansible-debian-latest-action@v1
         with:
-          targets: "./"
+          targets: "/github/workspace"
           #  [required]
           #   Paths to your ansible role or playboox.yml you want to test
           #   Some Examples:
@@ -91,6 +91,12 @@ or on various [events](https://help.github.com/en/articles/events-that-trigger-w
 
 <br/>
 
+ Limitations
+-------------
+The docker container unfortunately does not support a systemd environment. Therefore, it is currently not possible to test ansible roles that do anything in this direction.
+If you have suggestions how to change this, they are welcome!
+
+
  Contributing
 -------------
 If you are missing a feature or see a bug. Please report it. Or - if you like - open a pull-request.
@@ -104,4 +110,4 @@ The Dockerfile and associated scripts and documentation in this project are rele
 + The initial GitHub action has been created by [Stefan Stölzle](https://github.com/stoe) at
 [stoe/actions](https://github.com/stoe/actions).
 + It was used by ansible for lint checks at [ansible/ansible-lint-action](https://github.com/ansible/ansible-lint-action.git)
-+ It was modified from [L3D](github.com/do1jlr) to check ansible roles.
++ It was modified from [L3D](https://github.com/do1jlr) to check ansible roles.
